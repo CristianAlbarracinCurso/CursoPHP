@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Search Posts</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="GET" action="{% url 'search' %}">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="query" placeholder="Search for posts..." required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if results %}
+    <div class="mt-5">
+        <h3>Search Results</h3>
+        <div class="list-group">
+            {% for post in results %}
+                <a href="/post/{{ post.id }}" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ post.title }}</h5>
+                    <p class="mb-1">{{ post.content|truncatewords:20 }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% elif query %}
+    <div class="mt-5">
+        <p class="text-danger">No results found for "{{ query }}".</p>
+    </div>
+{% endif %}
+{% endblock %}
